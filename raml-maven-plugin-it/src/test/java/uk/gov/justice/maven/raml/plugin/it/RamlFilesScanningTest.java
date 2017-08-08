@@ -1,7 +1,10 @@
-package uk.gov.justice.maven.json.plugin.it;
+package uk.gov.justice.maven.raml.plugin.it;
 
 
-import org.junit.Test;
+import static org.apache.commons.lang.StringUtils.substringBefore;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.Assert.assertThat;
+
 import uk.gov.justice.raml.maven.test.RamlTitleAppendingGenerator;
 
 import java.net.URI;
@@ -12,11 +15,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static org.apache.commons.lang.StringUtils.substringBefore;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.assertThat;
+import org.junit.Test;
 
-public class JsonFilesScanningIT {
+public class RamlFilesScanningTest {
 
     @Test
     public void shouldProcessInternalAndExternalRamlFiles() throws Exception {
@@ -28,6 +29,6 @@ public class JsonFilesScanningIT {
     private Path recordedRamlTitlesFile() throws URISyntaxException {
         URL classUrl = this.getClass().getResource(this.getClass().getSimpleName() + ".class");
         String generatedSourcesFolder = substringBefore(classUrl.toString(), "test-classes") + "generated-sources/";
-        return Paths.get(new URI(generatedSourcesFolder + JsonTitleAppendingGenerator.FILE_NAME));
+        return Paths.get(new URI(generatedSourcesFolder + "raml-titles.txt"));
     }
 }
