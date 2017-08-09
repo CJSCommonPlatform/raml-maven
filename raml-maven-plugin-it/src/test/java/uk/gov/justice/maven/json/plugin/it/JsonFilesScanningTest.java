@@ -3,6 +3,7 @@ package uk.gov.justice.maven.json.plugin.it;
 
 import static org.apache.commons.lang.StringUtils.substringBefore;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertThat;
 
 import java.net.URI;
@@ -21,13 +22,7 @@ public class JsonFilesScanningTest {
     public void shouldProcessInternalAndExternalJsonFiles() throws Exception {
 
         List<String> recordedJsonTitles = Files.readAllLines(recordedJsonTitlesFile());
-
-        System.out.println("JsonFilesScanningTest: Printing out json-titles.txt");
-
-        recordedJsonTitles.stream()
-                .forEach(s -> System.out.println("JsonFilesScanningTest: Json Value Found" + s));
-
-        assertThat(recordedJsonTitles, containsInAnyOrder("one", "two"));
+        assertThat(recordedJsonTitles, hasItems("one", "two"));
     }
 
     private Path recordedJsonTitlesFile() throws URISyntaxException {

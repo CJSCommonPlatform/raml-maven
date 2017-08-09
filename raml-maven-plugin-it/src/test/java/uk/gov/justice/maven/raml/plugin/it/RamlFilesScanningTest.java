@@ -2,10 +2,8 @@ package uk.gov.justice.maven.raml.plugin.it;
 
 
 import static org.apache.commons.lang.StringUtils.substringBefore;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertThat;
-
-import uk.gov.justice.raml.maven.test.RamlTitleAppendingGenerator;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -23,7 +21,7 @@ public class RamlFilesScanningTest {
     public void shouldProcessInternalAndExternalRamlFiles() throws Exception {
 
         List<String> recordedRamlTitles = Files.readAllLines(recordedRamlTitlesFile());
-        assertThat(recordedRamlTitles, containsInAnyOrder("external-1.raml", "external-2.raml", "internal-1.raml"));
+        assertThat(recordedRamlTitles, hasItems("external-1.raml", "external-2.raml", "internal-1.raml"));
     }
 
     private Path recordedRamlTitlesFile() throws URISyntaxException {
