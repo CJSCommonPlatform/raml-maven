@@ -21,6 +21,12 @@ public class JsonFilesScanningTest {
     public void shouldProcessInternalAndExternalJsonFiles() throws Exception {
 
         List<String> recordedJsonTitles = Files.readAllLines(recordedJsonTitlesFile());
+
+        System.out.println("JsonFilesScanningTest: Printing out json-titles.txt");
+
+        recordedJsonTitles.stream()
+                .forEach(s -> System.out.println("JsonFilesScanningTest: Json Value Found" + s));
+
         assertThat(recordedJsonTitles, containsInAnyOrder("one", "two"));
     }
 
