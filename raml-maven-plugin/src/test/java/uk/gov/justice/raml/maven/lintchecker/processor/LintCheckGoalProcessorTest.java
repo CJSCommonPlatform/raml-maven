@@ -4,6 +4,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -20,6 +21,7 @@ import uk.gov.justice.raml.maven.lintchecker.LintCheckerException;
 import uk.gov.justice.raml.maven.lintchecker.rules.LintCheckRule;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
@@ -31,7 +33,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.raml.model.Raml;
 
@@ -60,11 +61,11 @@ public class LintCheckGoalProcessorTest {
 
         final File sourceDirectory = new File(("."));
         final List<LintCheckRule> rules = asList(lintCheckRule_1, lintCheckRule_2);
-        final String[] excludes = { "exclude_1" };
-        final String[] includes = { "include_1" };
+        final String[] excludes = {"exclude_1"};
+        final String[] includes = {"include_1"};
 
         when(fileTreeScanner.find(sourceDirectory.toPath(), includes, excludes)).thenReturn(paths);
-        when(ramlFileParser.ramlOf(sourceDirectory.toPath(), paths)).thenReturn(ramls);
+        when(ramlFileParser.parse(sourceDirectory.toPath(), paths)).thenReturn(ramls);
 
         lintCheckGoalProcessor.execute(
                 new LintCheckerGoalConfig(
@@ -96,11 +97,11 @@ public class LintCheckGoalProcessorTest {
 
         final File sourceDirectory = new File(("."));
         final List<LintCheckRule> rules = asList(lintCheckRule_1, lintCheckRule_2);
-        final String[] excludes = { "exclude_1" };
-        final String[] includes = { "include_1" };
+        final String[] excludes = {"exclude_1"};
+        final String[] includes = {"include_1"};
 
         when(fileTreeScanner.find(sourceDirectory.toPath(), includes, excludes)).thenReturn(paths);
-        when(ramlFileParser.ramlOf(sourceDirectory.toPath(), paths)).thenReturn(ramls);
+        when(ramlFileParser.parse(sourceDirectory.toPath(), paths)).thenReturn(ramls);
 
         doThrow(lintCheckerException).when(lintCheckRule_1).execute(eq(raml_1), any(LintCheckConfiguration.class));
 
@@ -123,5 +124,68 @@ public class LintCheckGoalProcessorTest {
         }
 
         verify(lintCheckRule_1).execute(eq(raml_1), any(LintCheckConfiguration.class));
+    }
+
+    @Test
+    public void shouldThrowMojoExecutionExceptionWhenNoPathsFound() throws Exception {
+        final MojoExecutionException mojoExecutionException = new MojoExecutionException("Ooops");
+
+        final LintCheckRule lintCheckRule_1 = mock(LintCheckRule.class);
+        final LintCheckRule lintCheckRule_2 = mock(LintCheckRule.class);
+        final Raml raml_1 = mock(Raml.class);
+        final Raml raml_2 = mock(Raml.class);
+
+        final Collection<Raml> ramls = asList(raml_1, raml_2);
+        final Collection<Path> paths = singletonList(mock(Path.class));
+
+        final File sourceDirectory = new File(("."));
+        final List<LintCheckRule> rules = asList(lintCheckRule_1, lintCheckRule_2);
+        final String[] excludes = {"exclude_1"};
+        final String[] includes = {"include_1"};
+
+        when(fileTreeScanner.find(sourceDirectory.toPath(), includes, excludes)).thenThrow(IOException.class);
+        when(ramlFileParser.parse(sourceDirectory.toPath(), paths)).thenReturn(ramls);
+        try {
+            lintCheckGoalProcessor
+                    .execute
+                            (
+                                    new LintCheckerGoalConfig(sourceDirectory,
+                                            rules,
+                                            asList(includes),
+                                            asList(excludes),
+                                            mock(MavenProject.class),
+                                            mock(Log.class)
+                                    )
+                            );
+            fail();
+        } catch (final MojoExecutionException expected) {
+            assertThat(expected.getCause(), is(mojoExecutionException.getCause()));
+            assertTrue(expected.getMessage().contains("Failed to find paths from source directory"));
+        }
+    }
+
+    @Test(expected = MojoExecutionException.class)
+    public void shouldThrowMojoExecutionExceptionAIfFileScannerFails() throws Exception {
+
+        final LintCheckRule lintCheckRule_1 = mock(LintCheckRule.class);
+        final File sourceDirectory = new File(("."));
+        final List<LintCheckRule> rules = asList(lintCheckRule_1);
+        final String[] excludes = {"exclude_1"};
+        final String[] includes = {"include_1"};
+
+        when(fileTreeScanner.find(sourceDirectory.toPath(), includes, excludes)).thenThrow(IOException.class);
+
+        lintCheckGoalProcessor
+                .execute
+                        (
+                                new LintCheckerGoalConfig(sourceDirectory,
+                                        rules,
+                                        asList(includes),
+                                        asList(excludes),
+                                        mock(MavenProject.class),
+                                        mock(Log.class)
+                                )
+                        );
+        fail();
     }
 }
