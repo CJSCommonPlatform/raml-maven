@@ -9,7 +9,7 @@
         <version>1.6.6-SNAPSHOT</version>
     </parent>
 
-    <artifactId>raml-maven-plugin</artifactId>
+    <artifactId>annotation-validator-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
 
     <scm>
@@ -20,6 +20,7 @@
 
     <properties>
         <org.apache.maven.plugin-tools.version>3.5</org.apache.maven.plugin-tools.version>
+        <framework-api-domain.version>2.2.0</framework-api-domain.version>
     </properties>
 
     <build>
@@ -30,7 +31,7 @@
                 <version>${org.apache.maven.plugin-tools.version}</version>
                 <configuration>
                     <skip>false</skip>
-                    <goalPrefix>raml</goalPrefix>
+                    <goalPrefix>annotation-validator</goalPrefix>
                 </configuration>
                 <executions>
                     <execution>
@@ -54,25 +55,6 @@
                     <artifactId>maven-artifact</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.justice.maven</groupId>
-            <artifactId>raml-generator-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.justice.maven</groupId>
-            <artifactId>io-utils</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.justice.maven</groupId>
-            <artifactId>raml-parser</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -122,6 +104,17 @@
             <artifactId>jcl-over-slf4j</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>uk.gov.justice.framework-api</groupId>
+            <artifactId>framework-api-domain</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <scope>test</scope>
@@ -140,23 +133,6 @@
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.json</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.justice.maven</groupId>
-            <artifactId>raml-for-testing-io</artifactId>
-            <version>${project.version}</version>
-            <classifier>raml</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.justice.maven</groupId>
-            <artifactId>lint-checker-core</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.maven</groupId>

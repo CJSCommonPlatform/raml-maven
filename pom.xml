@@ -22,11 +22,12 @@
         <module>raml-maven-plugin-it</module>
         <module>raml-generator-for-testing</module>
         <module>lint-checker-core</module>
-        <module>raml-maven-test-utils</module>
+        <module>maven-test-utils</module>
+        <module>annotation-validator-maven-plugin</module>
     </modules>
 
     <properties>
-        <common-bom.version>1.29.0</common-bom.version>
+        <common-bom.version>1.30.0</common-bom.version>
         <cpp.repo.name>raml-maven</cpp.repo.name>
     </properties>
 

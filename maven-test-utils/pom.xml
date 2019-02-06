@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>raml-maven-test-utils</artifactId>
+    <artifactId>maven-test-utils</artifactId>
 
     <scm>
         <connection>${cpp.scm.connection}</connection>

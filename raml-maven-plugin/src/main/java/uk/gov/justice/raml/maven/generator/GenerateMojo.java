@@ -21,7 +21,6 @@ import org.apache.maven.plugins.annotations.Parameter;
 @Mojo(name = "generate", requiresDependencyResolution = COMPILE_PLUS_RUNTIME, defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class GenerateMojo extends BasicMojo {
 
-
     /**
      * The fully qualified classname for the generator to use
      */
