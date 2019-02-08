@@ -11,8 +11,8 @@
     <build>
         <plugins>
             <plugin>
-                <artifactId>annotation-validator-maven-plugin</artifactId>
                 <groupId>uk.gov.justice.maven</groupId>
+                <artifactId>annotation-validator-maven-plugin</artifactId>
                 <version>1.6.6-SNAPSHOT</version>
                 <configuration>
                     <generateReport>true</generateReport>
