@@ -10,7 +10,7 @@
 
     <groupId>uk.gov.justice.maven</groupId>
     <artifactId>raml-maven</artifactId>
-    <version>1.6.6-SNAPSHOT</version>
+    <version>1.6.7-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -22,7 +22,6 @@
         <module>raml-maven-plugin-it</module>
         <module>raml-generator-for-testing</module>
         <module>lint-checker-core</module>
-        <module>raml-maven-test-utils</module>
     </modules>
 
     <properties>
